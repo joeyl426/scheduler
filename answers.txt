@@ -1,0 +1,54 @@
+1)
+
+    1 CPU:
+
+        # of Context Switches: 99
+        Total execution time: 67.6 s
+        Total time spent in READY state: 389.9 s
+
+    2 CPUs: 
+
+        # of Context Switches: 108
+        Total execution time: 35.8 s
+        Total time spent in READY state: 92.2 s
+
+    4 CPUs:
+
+        # of Context Switches: 185
+        Total execution time: 33.4 s
+        Total time spent in READY state: 0.3 s
+
+    The total execution time decreases by half going from 1 CPU to 2 CPUs, but then with the addition of two more CPUs total execution time only decreases by about 2%. This would suggest that there is not a linear relationship between the number of CPUs and total execution time. There are diminishing returns from adding processors because processes can't be divided into subprocesses and run in parallel across all CPUs. The large decrease in total execution time between 1 CPU and 2 CPUs was because with 1 CPU, processes were spending large amounts of time in the ready queue, but the addition of another CPU drastically reduced this.    
+
+2)
+
+    800ms: 
+    
+        # of Context Switches: 136
+        Total execution time: 67.6 s
+        Total time spent in READY state: 325.4 s
+        
+    600ms:
+        
+        # of Context Switches: 161
+        Total execution time: 67.6 s
+        Total time spent in READY state: 314.5 s
+        
+    400ms:
+    
+        # of Context Switches: 203
+        Total execution time: 67.6 s
+        Total time spent in READY state: 298.8 s
+        
+    200ms:
+        
+        # of Context Switches: 362
+        Total execution time: 67.5 s
+        Total time spent in READY state: 285.2 s
+        
+    We would not want to pick the shortest timeslice because context switches take time to perform and the shorter our timeslices, the more context switches we will do. Using the shortest possible timeslice would be particularly inefficient with long processes.
+    
+3)
+
+    Round robin is closest approximation to SJF because longer jobs will get interrupted (and consequently finish slower) than shorter jobs. The other two scheduling algorithms have no relationship between job length and the order in which the jobs are scheduled.
+    
