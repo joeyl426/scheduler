@@ -50,5 +50,56 @@
     
 3)
 
-    Round robin is closest approximation to SJF because longer jobs will get interrupted (and consequently finish slower) than shorter jobs. The other two scheduling algorithms have no relationship between job length and the order in which the jobs are scheduled.
+    FIFO: 
+    
+        1 CPU:
+
+        # of Context Switches: 99
+        Total execution time: 67.6 s
+        Total time spent in READY state: 389.9 s
+
+    Round Robin:
+    
+        1 CPU / 200ms:
+
+            # of Context Switches: 362
+            Total execution time: 67.5 s
+            Total time spent in READY state: 285.2 s
+            
+    Static Priority:
+    
+        1 CPU:
+        
+            # of Context Switches: 168
+            Total execution time: 68.3 s
+            Total time spent in READY state: 160.4 s
+
+    Round robin with a short timeslice is the closest approximation to SJF because longer jobs will get interrupted (and consequently finish slower) more frequently than shorter jobs. With the assumption that priority and the length of a job are not correlated, the other two scheduling algorithms have no relationship between job length and the order in which the jobs are scheduled. If that assumption is not true, then static priority could become a better approximation of SJF if priority and job length are very closely related. FIFO is clearly the worst with a wait time much larger than the others. Static Priority significantly outperforms Round Robin in our tests with 1 CPU, this implies that in this simulation the priority of a job is aligned with the length of the job.
+    
+4)
+
+    Multi-Level Feedback
+
+        800ms: 
+            
+            # of Context Switches: 138
+            Total execution time: 67.7 s
+            Total time spent in READY state: 396.3 s
+
+        600ms:
+
+            # of Context Switches: 163
+            Total execution time: 67.7 s
+            Total time spent in READY state: 396.3 s
+
+        400ms:
+
+            # of Context Switches: 205
+            Total execution time: 67.7 s
+            Total time spent in READY state: 396.3 s
+            
+    
+    Round Robin is heavily dependent on the time slice and the time spent in ready state gets worse as the time slice increases. This is the case as Round Robin performs similarly to SJF with short timeslices (especially without the overhead of an actual hardware implementation). This is not the case for MLFS, the time spent in the ready state is almost constant .
+
+           
     

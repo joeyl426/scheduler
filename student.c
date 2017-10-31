@@ -187,7 +187,6 @@ extern void idle(unsigned int cpu_id)
 static void schedule(unsigned int cpu_id) {
     // selects and removes a runnable process from your ready queue
     pcb_t* proc = alg == MLF ? getHighestMLF(): getReadyProcess();
-    //printf("proc name: %s\n", proc -> name);
     // updates array to show process (thread safe)
     pthread_mutex_lock(&current_mutex);
     current[cpu_id] = proc;
@@ -216,6 +215,7 @@ static void schedule(unsigned int cpu_id) {
  * THIS FUNCTION MUST BE IMPLEMENTED FOR ROUND ROBIN OR PRIORITY SCHEDULING
  */
 extern void preempt(unsigned int cpu_id) {
+    print("preempting\n");
     if(alg == MLF){
         pcb_t* proc = getProcessForCpuId(cpu_id);
         setState(cpu_id, PROCESS_READY);
@@ -292,7 +292,6 @@ extern void wake_up(pcb_t *process) {
             pthread_mutex_unlock(&preempt_mutex);
             process->state = PROCESS_READY;
             addReadyProcess(process);
-            printf("cpu_id: %i\n", cpu_id);
 
             force_preempt(cpu_id);
         } else {
@@ -306,7 +305,6 @@ extern void wake_up(pcb_t *process) {
             addToQueue(process,1);
         }
         else{
-            print("i/o\n");
             process->state = PROCESS_READY;
             addToQueue(process,3);
         }
@@ -424,8 +422,6 @@ pcb_t* getLowestPriorityProcess(pcb_t* process) {
     int i = 0;
     while(i < cpu_count){
         if(current[i]){
-            printf("current is a process with priority: %i & id: %i\n", current[i] -> static_priority, current[i] -> pid);
-            printf("new process with priority: %i & id: %i\n", processPriority, process -> pid);
             if((current[i] -> static_priority) < lowest -> static_priority){
                 lowest = current[i];
             }
@@ -436,7 +432,6 @@ pcb_t* getLowestPriorityProcess(pcb_t* process) {
     if(lowest -> static_priority >= processPriority)
         return NULL;
     else{
-        printf("lowest has a priority of: %i\n", lowest -> static_priority);
         return lowest;
     }
 }
@@ -478,8 +473,10 @@ void addToQueue(pcb_t* proc, int priority){
             pthread_cond_signal(&ml_empty);
         }
         else {
+            pcb_t* temp = mltail1;
             mltail1 = proc;
-            mltail1->next = NULL;
+            temp -> next = mltail1;
+            mltail1 -> next = NULL;
             if(!(mlhead1 -> next))
                 mlhead1 -> next = mltail1;
         }
@@ -493,8 +490,10 @@ void addToQueue(pcb_t* proc, int priority){
             pthread_cond_signal(&ml_empty);
         }
         else {
+            pcb_t* temp = mltail2;
             mltail2 = proc;
-            mltail2->next = NULL;
+            temp -> next = mltail2;
+            mltail2 -> next = NULL;
             if(!(mlhead2 -> next))
                 mlhead2 -> next = mltail2;
         }
@@ -508,8 +507,10 @@ void addToQueue(pcb_t* proc, int priority){
             pthread_cond_signal(&ml_empty);
         }
         else {
+            pcb_t* temp = mltail3;
             mltail3 = proc;
-            mltail3->next = NULL;
+            temp -> next = mltail3;
+            mltail3 -> next = NULL;
             if(!(mlhead3 -> next))
                 mlhead3 -> next = mltail3;
         }
@@ -523,8 +524,10 @@ void addToQueue(pcb_t* proc, int priority){
             pthread_cond_signal(&ml_empty);
         }
         else {
+            pcb_t* temp = mltail4;
             mltail4 = proc;
-            mltail4->next = NULL;
+            temp -> next = mltail4;
+            mltail4 -> next = NULL;
             if(!(mlhead4 -> next))
                 mlhead4 -> next = mltail4;
         }
@@ -593,7 +596,6 @@ pcb_t* getHighestMLF(){
         return removeFromQueue(3);
     if(mlhead4)
         return removeFromQueue(4);
-    print("thisisnull\n");
     return NULL;
 }
 
