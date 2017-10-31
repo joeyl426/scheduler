@@ -99,7 +99,7 @@
             Total time spent in READY state: 396.3 s
             
     
-    Round Robin is heavily dependent on the time slice and the time spent in ready state gets worse as the time slice increases. This is the case as Round Robin performs similarly to SJF with short timeslices (especially without the overhead of an actual hardware implementation). This is not the case for MLFS, the time spent in the ready state is almost constant .
+    Round Robin is heavily dependent on the time slice and the time spent in the ready state gets better as the time slice decreases. This is the case as Round Robin performs similarly to SJF with short timeslices (especially without the overhead of an actual hardware implementation). While our numbers don't communicate the benefits of MLFS over Round Robin, we understand that if priority of a process is loosely associated with length (shortest jobs tend to have the highest priority) then this algorithm will be very efficient with medium sized time slices. With medium time slices we will gain the efficiency of interrupting longer tasks (and allow the short processes to finish), but without the redundant context switching from small timeslices. 
 
            
     
